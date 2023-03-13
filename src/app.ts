@@ -1,4 +1,5 @@
 import express from "express";
+import { sequelize } from "./db";
 
 const app = express();
 
@@ -8,6 +9,16 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+const start = async () => {
+    try {
+        await sequelize.authenticate();
+        await sequelize.sync();
+        app.listen(PORT, () => console.log(`Listening on port ${PORT}....`));
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+
+start();
