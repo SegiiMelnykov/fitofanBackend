@@ -21,7 +21,7 @@ class UserController {
             const { email, password } = req.body;
 
             if ( !email || !password) {
-                return next(ApiError.badRequest('incorrect data'));
+                return next(ApiError.badRequest('enter emeail and password to registration')); 
             }
 
             const candidate = await User.findOne({where: { email }});

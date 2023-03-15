@@ -3,6 +3,7 @@ require('dotenv').config()
 import sequelize from "./db";
 import models from "./models";
 import cors from "cors";
+import errorHandler from "./middleware/errorHandlerMiddleware";
 import router from "./routes";
 
 const PORT = process.env.PORT || 3000;
@@ -12,6 +13,9 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', router);
 
+
+// Should be the last middleware
+app.use(errorHandler);
 
 const start = async () => {
     try {

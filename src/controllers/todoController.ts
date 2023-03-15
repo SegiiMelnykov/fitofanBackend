@@ -17,8 +17,8 @@ class ToDoController {
             if (title.length < 3) {
                 return next(ApiError.badRequest("Title must be at least 3 characters long"));
             }
-            if (!dueDate) {
-                return next(ApiError.badRequest("Due date is required"));
+            if (new Date() >= new Date(dueDate)) {
+                return next(ApiError.badRequest("Due date is wrong"));
             }
             const todo = await ToDo.create({ title, description, dueDate, completed, userId: req.user.id });
             return res.json(todo);
@@ -55,6 +55,12 @@ class ToDoController {
             const todo = await ToDo.findOne({ where: { id, userId: req.user.id } });
             if (!todo) {
                 return next(ApiError.badRequest("Todo not found"));
+            }
+            if (title.length < 3) {
+                return next(ApiError.badRequest("Title must be at least 3 characters long"));
+            }
+            if (new Date() >= new Date(dueDate)) {
+                return next(ApiError.badRequest("Due date is wrong"));
             }
             todo.title = title;
             todo.description = description;
